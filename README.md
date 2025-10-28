@@ -1,3 +1,76 @@
+ # 🐉 Pokemon Cache API
+
+ API REST em Spring Boot 3.2.0 + Java 21 que consome a PokeAPI e mantém um cache local em H2.
+
+ ## Sobre
+
+ Aplicação simples para buscar Pokémon na PokeAPI, persistir no banco H2 e expor endpoints para
+ listagem, busca por tipo e marcação como favorito.
+
+ ## Tecnologias
+
+ - Java 21
+ - Spring Boot 3.2.0
+ - Spring Data JPA
+ - H2 (in-memory)
+ - Spring WebFlux (WebClient)
+ - Lombok
+ - Gradle 8.5
+
+ ## Como executar
+
+ No Windows (PowerShell):
+
+ ```powershell
+ .\gradlew.bat bootRun
+ # Acesse: http://localhost:8080
+ ```
+
+ ## Console H2
+
+ - URL: http://localhost:8080/h2-console
+ - JDBC URL: `jdbc:h2:mem:pokemondb`
+ - User: `sa`
+ - Password: (vazio)
+
+ ## Endpoints principais
+
+ - POST /api/pokemon/cache/{nameOrId}  — cacheia um Pokémon da PokeAPI (201)
+ - GET  /api/pokemon?page=0&size=10   — lista paginada (200)
+ - GET  /api/pokemon/{id}             — detalhes por id local (200)
+ - GET  /api/pokemon/search?type=fire — busca por tipo (200)
+ - PATCH /api/pokemon/{id}/favorite   — marcar/atualizar favorito (200)
+ - GET /actuator/health               — health check
+
+ ## Robustez
+
+ O projeto implementa tratamento global de exceções, validações de entrada e logs estruturados.
+ Para a documentação técnica completa sobre erros, códigos HTTP, validações e testes de robustez,
+ consulte: [ROBUSTEZ.md](ROBUSTEZ.md)
+
+ ## Testes rápidos (PowerShell)
+
+ ```powershell
+ # Cachear
+ Invoke-RestMethod -Method POST -Uri http://localhost:8080/api/pokemon/cache/pikachu
+
+ # Listar
+ Invoke-RestMethod -Uri http://localhost:8080/api/pokemon
+
+ # Favoritar
+ $body = @{favorite=$true; note="Meu favorito"} | ConvertTo-Json
+ Invoke-RestMethod -Method PATCH -Uri http://localhost:8080/api/pokemon/1/favorite -Body $body -ContentType "application/json"
+ ```
+
+ ## Links úteis
+
+ - Aplicação: http://localhost:8080
+ - Console H2: http://localhost:8080/h2-console
+ - PokeAPI: https://pokeapi.co/docs/v2
+
+ ---
+
+ Desenvolvido por Paulo Henrique Araujo
 # 🐉 Pokemon Cache API# 🐉 Pokemon Cache API# 🐉 Pokemon Cache API# 🐉 Pokemon Cache API# Pokemon Cache API
 
 
@@ -1002,32 +1075,6 @@ GET /api/pokemon?page={page}&size={size}
 - **ROBUSTEZ.md** - Detalhes completos sobre tratamento de erros e testes de validação``````
 
 
-
----  .   ____          _            __ _ _
-
-
-
-**Desenvolvido com ☕ Java 21 e 💚 Spring Boot** /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \**Resposta:**
-
-
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \```json
-
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) ){
-
-  '  |____| .__|_| |_|_| |_\__, | / / / /  "content": [
-
- =========|_|==============|___/=/_/_/_/    {
-
- :: Spring Boot ::                (v3.2.0)      "id": 1,
-
-      "idPokeApi": 25,
-
-... Started PokemonCacheApiApplication in 6.705 seconds      "name": "pikachu",
-
-```      "types": "electric",
-
-      "cachedAt": "2025-10-22T20:30:00"
-
 ✅ Aplicação rodando em **`http://localhost:8080`**    }
 
   ],
@@ -1292,33 +1339,7 @@ curl http://localhost:8080/api/pokemon?page=0&size=5  "status": "UP"
 
       "cachedAt": "2025-10-27T15:30:00"
 
-    },# 2. Listar todos
-
-    {curl http://localhost:8080/api/pokemon
-
-      "id": 2,
-
-      "idPokeApi": 6,# 3. Buscar por tipo
-
-      "name": "charizard",curl "http://localhost:8080/api/pokemon/search?type=fire"
-
-      "types": "fire, flying",
-
-      "cachedAt": "2025-10-27T15:31:00"# 4. Ver detalhes de um específico
-
-    }curl http://localhost:8080/api/pokemon/1
-
-  ],
-
-  "pageable": {# 5. Favoritar
-
-    "pageNumber": 0,curl -X PATCH http://localhost:8080/api/pokemon/1/favorite \
-
-    "pageSize": 5  -H "Content-Type: application/json" \
-
-  },  -d "{\"favorite\": true, \"note\": \"Starter do jogo!\"}"
-
-  "totalElements": 2,```
+    },```
 
   "totalPages": 1
 
@@ -1434,7 +1455,7 @@ GET /api/pokemon/search?type={typeName}&page={page}&size={size}- Injeção de de
 
 
 
-**Exemplo:****Desenvolvido com ☕ e Spring Boot**
+
 
 ```bash
 # Windows PowerShell
