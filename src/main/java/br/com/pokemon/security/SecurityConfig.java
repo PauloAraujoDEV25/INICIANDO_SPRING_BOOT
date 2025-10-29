@@ -57,7 +57,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .headers(headers -> headers
-                        .frameOptions().disable() // Para permitir H2 Console
+                        .frameOptions(frame -> frame.disable()) // Para permitir H2 Console
                 );
         
         return http.build();

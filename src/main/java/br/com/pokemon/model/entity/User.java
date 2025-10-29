@@ -33,6 +33,7 @@ public class User {
     private String role; // ROLE_USER, ROLE_ADMIN
     
     @Column(nullable = false)
+    @Builder.Default
     private Boolean enabled = true;
     
     @Column(name = "created_at", nullable = false, updatable = false)
