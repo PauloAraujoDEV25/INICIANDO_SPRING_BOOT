@@ -37,6 +37,9 @@ dependencies {
     // Spring Boot Actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
