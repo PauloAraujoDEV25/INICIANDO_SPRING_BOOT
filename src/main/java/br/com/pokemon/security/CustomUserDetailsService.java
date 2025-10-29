@@ -1,4 +1,4 @@
-package br.com.pokemon.service;
+package br.com.pokemon.security;
 
 import br.com.pokemon.model.entity.User;
 import br.com.pokemon.model.repository.UserRepository;

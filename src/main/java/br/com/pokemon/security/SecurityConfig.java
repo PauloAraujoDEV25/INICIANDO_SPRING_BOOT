@@ -1,6 +1,5 @@
-package br.com.pokemon.config;
+package br.com.pokemon.security;
 
-import br.com.pokemon.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
